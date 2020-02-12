@@ -128,14 +128,14 @@ int main(int argc, char **argv)
 
 		for(int i=0; i<assignments.length(); i++){
 			
-			if( nums.find(assignments.at(i)) == -1){
+			if( nums.find(assignments.at(i)) < 1){
 				repeat = 1;
 				printf("Sorry, I cannot understand your answer\n");
 				break;
 			}	
 		}
 
-		if( std::stol(id) > MAX_INT ){
+		if( std::stol(id) > MAX_INT || std::stol(id) < 1){
 			repeat = 1;
 			std::cout << "Sorry, I cannot understand your answer\n";
 			continue;
@@ -152,14 +152,15 @@ int main(int argc, char **argv)
 
 	std::cout << "\n";
 		// -------------- GET USER SCORES INPUT ------------------ //
+	int decimals;
 	for( int i=0; i<student.n_assignments; i++){
 		
 		repeat = 1;
 		while(repeat){
-		
+			decimals = 0;
 			repeat = 0;
 
-			std::cout << "Please enter grade for assignment " << i << " : ";
+			std::cout << "Please enter grade for assignment " << i << ": ";
 			std::cin >> scores[i];
 
 			for(int j=0; j<scores[i].length(); j++){
@@ -169,13 +170,20 @@ int main(int argc, char **argv)
 					printf("Sorry, I cannot understand your answer\n");
 					break;
 				}	
-				
+
+				if( nums.find(scores[i].at(j)) == 0 ) decimals ++;
 			}
 
-			if( std::stoi(scores[i]) >= 1000 ){
+			if(decimals > 1){
 				repeat = 1;
 				printf("Sorry, I cannot understand your answer\n");
 			}
+				
+		}
+
+		if( std::stoi(scores[i]) >= 1000 ){
+			repeat = 1;
+			printf("Sorry, I cannot understand your answer\n");
 		}
 	}
 
@@ -190,7 +198,8 @@ int main(int argc, char **argv)
 
 //Print Results
 	std::cout << "\nStudent: " << student.f_name << " " << student.l_name << " [" << student.id << "]\n";
-	std::cout << "  Average grade: " << average << "\n";
+	printf( "  Average grade: %.1lf\n", average);
+
     return 0;
 }
 
